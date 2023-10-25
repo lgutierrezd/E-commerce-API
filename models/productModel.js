@@ -24,7 +24,7 @@ const productSchema = new mongoose.Schema(
     },
     productionPrice: {
       type: Number,
-      required: [true, 'A product must have a price'],
+      required: [true, 'A product must have a production price'],
     },
     isActive: {
       type: Boolean,
@@ -33,9 +33,26 @@ const productSchema = new mongoose.Schema(
     images: [String],
     category: {
       type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'A product must have a category'],
       ref: 'Category', // Reference to the category model
     },
-    setup: [String],
+    brand: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: [true, 'A product must have a brand'],
+      ref: 'Brand', // Reference to the brand model
+    },
+    suppliers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Supplier', // Reference to the supplier model
+      },
+    ],
+    setup: [
+      {
+        key: String,
+        value: String,
+      },
+    ],
   },
   {
     toJSON: { virtuals: true },
