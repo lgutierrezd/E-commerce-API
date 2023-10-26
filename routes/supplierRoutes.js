@@ -1,34 +1,38 @@
 const express = require('express');
-const productController = require('../controllers/productController');
+const supplierController = require('../controllers/supplierController');
 const authController = require('./../controllers/authController');
-const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
-// router.param('id', tourController.checkID); param MIDDLEWARE
-
-router.use('/:id/reviews', reviewRouter);
 
 router
   .route('/')
-  .get(productController.getAllProducts)
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    supplierController.getAllSuppliers,
+  )
   .post(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.createProduct,
+    supplierController.createSupplier,
   );
 
 router
   .route('/:id')
-  .get(productController.getProduct)
+  .get(
+    authController.protect,
+    authController.restrictTo('admin'),
+    supplierController.getSupplier,
+  )
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.updateProduct,
+    supplierController.updateSupplier,
   )
   .delete(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.deleteProduct,
+    supplierController.deleteSupplier,
   );
 
 module.exports = router;

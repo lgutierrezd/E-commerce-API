@@ -1,34 +1,30 @@
 const express = require('express');
-const productController = require('../controllers/productController');
+const brandController = require('../controllers/brandController');
 const authController = require('./../controllers/authController');
-const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
-// router.param('id', tourController.checkID); param MIDDLEWARE
-
-router.use('/:id/reviews', reviewRouter);
 
 router
   .route('/')
-  .get(productController.getAllProducts)
+  .get(brandController.getAllBrands)
   .post(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.createProduct,
+    brandController.createBrand,
   );
 
 router
   .route('/:id')
-  .get(productController.getProduct)
+  .get(brandController.getBrand)
   .patch(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.updateProduct,
+    brandController.updateBrand,
   )
   .delete(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.deleteProduct,
+    brandController.deleteBrand,
   );
 
 module.exports = router;

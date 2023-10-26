@@ -11,6 +11,13 @@ const globalErrorHandler = require('./controllers/errorController');
 const categoryRouter = require('./routes/categoryRoutes');
 const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
+const reviewRouter = require('./routes/reviewRoutes');
+const shippingMethodRouter = require('./routes/shippingMethodRoutes');
+const stockRouter = require('./routes/stockRoutes');
+const supplierRouter = require('./routes/supplierRoutes');
+const brandRouter = require('./routes/brandRoutes');
+const cartRouter = require('./routes/cartRoutes');
+const orderRouter = require('./routes/orderRoutes');
 
 const app = express();
 
@@ -67,6 +74,13 @@ app.use((req, res, next) => {
 });
 
 // 3) ROUTES API
+//app.use('/api/v1/order', orderRouter);
+//app.use('/api/v1/cart', cartRouter);
+app.use('/api/v1/brand', brandRouter);
+app.use('/api/v1/supplier', supplierRouter);
+app.use('/api/v1/stock', stockRouter);
+app.use('/api/v1/shippingMethod', shippingMethodRouter);
+app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);

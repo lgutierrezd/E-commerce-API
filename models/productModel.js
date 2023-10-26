@@ -13,7 +13,7 @@ const productSchema = new mongoose.Schema(
         'A product name must have less or equal then 50 characters',
       ],
       minlength: [
-        10,
+        4,
         'A product name must have more or equal then 10 characters',
       ],
     },
@@ -64,6 +64,13 @@ const productSchema = new mongoose.Schema(
 productSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
+});
+
+// Virtual populate
+productSchema.virtual('reviews', {
+  ref: 'Review',
+  foreignField: 'Product',
+  localField: '_id',
 });
 
 const Product = mongoose.model('Product', productSchema);

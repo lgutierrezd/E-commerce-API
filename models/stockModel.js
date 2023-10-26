@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const stockSchema = new mongoose.Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
@@ -10,3 +12,4 @@ const stockSchema = new mongoose.Schema({
 });
 
 const Stock = mongoose.model('Stock', stockSchema);
+module.exports = Stock;

@@ -1,3 +1,5 @@
+const mongoose = require('mongoose');
+
 const shippingMethodSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -11,3 +13,4 @@ const shippingMethodSchema = new mongoose.Schema({
 });
 
 const ShippingMethod = mongoose.model('ShippingMethod', shippingMethodSchema);
+module.exports = ShippingMethod;
