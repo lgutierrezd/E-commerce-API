@@ -3,28 +3,17 @@ const stockController = require('../controllers/stockController');
 const authController = require('./../controllers/authController');
 
 const router = express.Router();
+router.use(authController.protect, authController.restrictTo('admin'));
 
 router
   .route('/')
   .get(stockController.getAllStocks)
-  .post(
-    authController.protect,
-    authController.restrictTo('admin'),
-    stockController.createStock,
-  );
+  .post(stockController.createStock);
 
 router
   .route('/:id')
   .get(stockController.getStock)
-  .patch(
-    authController.protect,
-    authController.restrictTo('admin'),
-    stockController.updateStock,
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    stockController.deleteStock,
-  );
+  .patch(stockController.updateStock)
+  .delete(stockController.deleteStock);
 
 module.exports = router;

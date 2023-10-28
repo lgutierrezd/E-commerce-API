@@ -47,10 +47,10 @@ exports.createOne = (Model) =>
     });
   });
 
-exports.getOne = (Model, popOptions) =>
+exports.getOne = (Model, popOptions, select) =>
   catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
-    if (popOptions) query = query.populate(popOptions);
+    if (popOptions) query = query.select(select).populate(popOptions);
     const doc = await query;
 
     if (!doc) {
@@ -65,7 +65,7 @@ exports.getOne = (Model, popOptions) =>
     });
   });
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     // To allow for nested GET reviews on tour (hack)
     let filter = {};
@@ -76,6 +76,7 @@ exports.getAll = (Model) =>
       .sort()
       .limitFields()
       .paginate();
+    if (popOptions) features.query = features.query.populate(popOptions);
     // const doc = await features.query.explain();
     const doc = await features.query;
 

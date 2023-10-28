@@ -17,6 +17,16 @@ const cartSchema = new mongoose.Schema({
       },
     },
   ],
+  state: {
+    type: String,
+    enum: ['open', 'closed'],
+    default: 'open',
+    required: true,
+  },
+  dateCreated: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 const Cart = mongoose.model('Cart', cartSchema);

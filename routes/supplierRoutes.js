@@ -3,36 +3,17 @@ const supplierController = require('../controllers/supplierController');
 const authController = require('./../controllers/authController');
 
 const router = express.Router();
+router.use(authController.protect, authController.restrictTo('admin'));
 
 router
   .route('/')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    supplierController.getAllSuppliers,
-  )
-  .post(
-    authController.protect,
-    authController.restrictTo('admin'),
-    supplierController.createSupplier,
-  );
+  .get(supplierController.getAllSuppliers)
+  .post(supplierController.createSupplier);
 
 router
   .route('/:id')
-  .get(
-    authController.protect,
-    authController.restrictTo('admin'),
-    supplierController.getSupplier,
-  )
-  .patch(
-    authController.protect,
-    authController.restrictTo('admin'),
-    supplierController.updateSupplier,
-  )
-  .delete(
-    authController.protect,
-    authController.restrictTo('admin'),
-    supplierController.deleteSupplier,
-  );
+  .get(supplierController.getSupplier)
+  .patch(supplierController.updateSupplier)
+  .delete(supplierController.deleteSupplier);
 
 module.exports = router;
