@@ -73,5 +73,11 @@ productSchema.virtual('reviews', {
   localField: '_id',
 });
 
+productSchema.virtual('stock', {
+  ref: 'Stock',
+  foreignField: 'product',
+  localField: '_id',
+});
+
 const Product = mongoose.model('Product', productSchema);
 module.exports = Product;
