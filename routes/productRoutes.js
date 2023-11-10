@@ -18,6 +18,15 @@ router
   );
 
 router.route('/:slug').get(productController.getProductBySlug);
+router.route('/search/:regex').get(productController.getProductsByRegex);
+
+router
+  .route('/config/:id')
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productController.addProductConfig,
+  );
 
 router
   .route('/:id')
@@ -30,7 +39,7 @@ router
   .delete(
     authController.protect,
     authController.restrictTo('admin'),
-    productController.deleteProduct,
+    productController.deleteProduct_isActive,
   );
 
 module.exports = router;

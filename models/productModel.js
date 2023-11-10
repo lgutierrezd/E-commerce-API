@@ -18,19 +18,10 @@ const productSchema = new mongoose.Schema(
       ],
     },
     slug: String,
-    price: {
-      type: Number,
-      required: [true, 'A product must have a price'],
-    },
-    productionPrice: {
-      type: Number,
-      required: [true, 'A product must have a production price'],
-    },
     isActive: {
       type: Boolean,
       default: true,
     },
-    images: [String],
     category: {
       type: mongoose.Schema.Types.ObjectId,
       required: [true, 'A product must have a category'],
@@ -47,12 +38,6 @@ const productSchema = new mongoose.Schema(
         ref: 'Supplier', // Reference to the supplier model
       },
     ],
-    setup: [
-      {
-        key: String,
-        value: String,
-      },
-    ],
   },
   {
     toJSON: { virtuals: true },
@@ -63,6 +48,17 @@ const productSchema = new mongoose.Schema(
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
 productSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
+  if (this.price !== undefined && this.price !== null) {
+    this.price = parseFloat(this.price.toFixed(2));
+  }
+  next();
+});
+
+productSchema.pre('findOneAndUpdate', function (next) {
+  const update = this.getUpdate();
+  if (update.price !== undefined && update.price !== null) {
+    update.price = parseFloat(update.price.toFixed(2));
+  }
   next();
 });
 
@@ -70,12 +66,6 @@ productSchema.pre('save', function (next) {
 productSchema.virtual('reviews', {
   ref: 'Review',
   foreignField: 'Product',
-  localField: '_id',
-});
-
-productSchema.virtual('stock', {
-  ref: 'Stock',
-  foreignField: 'product',
   localField: '_id',
 });
 

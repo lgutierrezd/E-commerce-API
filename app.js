@@ -6,6 +6,7 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -21,8 +22,11 @@ const cartRouter = require('./routes/cartRoutes');
 const orderRouter = require('./routes/orderRoutes');
 
 const app = express();
-
-app.use(cors());
+const corsOptions = {
+  origin: ['http://localhost:8080', 'http://192.168.100.28:8080'], // Replace with the actual origin of your client application
+  credentials: true, // Allow credentials (cookies, etc.)
+};
+app.use(cors(corsOptions));
 app.options('*', cors());
 // Set security HTTP headers
 app.use(helmet());
@@ -42,7 +46,7 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
-
+app.use(cookieParser());
 // Data sanitization against NoSQL query injection
 app.use(mongoSanitize());
 
@@ -66,10 +70,11 @@ app.use(
 // Serving static files
 //app.use(express.static(`${__dirname}/public`)); //static files folder public but doesn't exist
 
-app.use((req, res, next) => {
-  console.log('Hello from the middleware 👋');
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('Hello cookies');
+// console.log(`Req cookie: ${req.cookies}`);
+//   next();
+// });
 
 app.use((req, res, next) => {
   req.requestTime = new Date().toISOString();
