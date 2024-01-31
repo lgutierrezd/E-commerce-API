@@ -46,11 +46,18 @@ const productSchema = new mongoose.Schema(
 );
 
 // DOCUMENT MIDDLEWARE: runs before .save() and .create()
-productSchema.pre('save', function (next) {
+productSchema.pre('save', async function (next) {
+  const existingProduct = await this.constructor.findOne({ name: this.name });
+  if (existingProduct) {
+    const err = new Error('A product with this name already exists.');
+    return next(err);
+  }
   this.slug = slugify(this.name, { lower: true });
+
   if (this.price !== undefined && this.price !== null) {
     this.price = parseFloat(this.price.toFixed(2));
   }
+
   next();
 });
 

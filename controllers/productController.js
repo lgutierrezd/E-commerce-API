@@ -114,8 +114,10 @@ exports.addProductConfig = catchAsync(async (req, res, next) => {
 exports.updateProduct = factory.updateOne(Product);
 exports.deleteProduct = factory.deleteOne(Product);
 exports.deleteProduct_isActive = catchAsync(async (req, res, next) => {
+  const isActive = req.body.isActive !== undefined ? req.body.isActive : false;
+
   const product = await Product.findByIdAndUpdate(req.params.id, {
-    isActive: false,
+    isActive: isActive,
   });
   res.status(204).json({
     status: 'success',
