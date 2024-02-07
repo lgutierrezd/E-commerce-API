@@ -27,16 +27,19 @@ const productConfigSchema = new mongoose.Schema({
         {
           location: String,
           quantity: Number,
+          size: String,
         },
       ],
       isActive: {
         type: Boolean,
         default: true,
       },
-      extraConfig: {
-        key: String,
-        value: String,
-      },
+      extraConfig: [
+        {
+          key: String,
+          value: String,
+        },
+      ],
     },
   ],
 });

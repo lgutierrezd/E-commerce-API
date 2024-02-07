@@ -29,6 +29,15 @@ router
   );
 
 router
+  .route('/config/:id')
+  .get(productController.getProductConfig)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productController.updateProductConfig,
+  );
+
+router
   .route('/:id')
   .get(productController.getProduct)
   .patch(

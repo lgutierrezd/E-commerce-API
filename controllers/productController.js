@@ -64,40 +64,22 @@ exports.getProduct = factory.getOne(
   '-suppliers',
 );
 
-// exports.createProduct = catchAsync(async (req, res, next) => {
-//   // Create the parent Product first
-//   const product = await Product.create(req.body);
-
-//   if (req.body.config && Array.isArray(req.body.config)) {
-//     const productConfigs = [];
-
-//     for (const config of req.body.config) {
-//       const productConfig = new ProductConfig(config);
-
-//       // Associate the ProductConfig with the newly created Product
-//       productConfig.product = product._id;
-
-//       // Save the ProductConfig to the database
-//       await productConfig.save();
-
-//       productConfigs.push(productConfig);
-//     }
-
-//     // Update the Product with the list of associated ProductConfigs
-//     product.config = productConfigs.map((pc) => pc._id);
-//     await product.save();
-//   }
-
-//   res.status(201).json({
-//     status: 'success',
-//     data: {
-//       product,
-//       message: 'Product and Product configurations created successfully',
-//     },
-//   });
-// });
-
 exports.createProduct = factory.createOne(Product);
+exports.updateProduct = factory.updateOne(Product);
+exports.deleteProduct = factory.deleteOne(Product);
+exports.deleteProduct_isActive = catchAsync(async (req, res, next) => {
+  const isActive = req.body.isActive !== undefined ? req.body.isActive : false;
+
+  const product = await Product.findByIdAndUpdate(req.params.id, {
+    isActive: isActive,
+  });
+  res.status(204).json({
+    status: 'success',
+    data: null,
+  });
+});
+
+exports.getProductConfig = factory.getOne(ProductConfig);
 exports.addProductConfig = catchAsync(async (req, res, next) => {
   req.body.id = req.params.id;
   const product = await ProductConfig.create(req.body);
@@ -111,12 +93,12 @@ exports.addProductConfig = catchAsync(async (req, res, next) => {
     });
   }
 });
-exports.updateProduct = factory.updateOne(Product);
-exports.deleteProduct = factory.deleteOne(Product);
-exports.deleteProduct_isActive = catchAsync(async (req, res, next) => {
+
+exports.updateProductConfig = factory.updateOne(ProductConfig);
+exports.deleteProductConfig = catchAsync(async (req, res, next) => {
   const isActive = req.body.isActive !== undefined ? req.body.isActive : false;
 
-  const product = await Product.findByIdAndUpdate(req.params.id, {
+  const product = await ProductConfig.findByIdAndUpdate(req.params.id, {
     isActive: isActive,
   });
   res.status(204).json({
