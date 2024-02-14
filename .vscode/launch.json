@@ -1,0 +1,17 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Server (Development)",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "program": "${workspaceFolder}/server.js",
+            "runtimeExecutable": "nodemon",
+            "runtimeArgs": ["--inspect-brk=9229"],
+            "restart": true,
+        }
+    ]
+}

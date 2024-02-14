@@ -9,10 +9,13 @@ const categorySchema = new mongoose.Schema({
     maxlength: [50, 'A category name must have less or equal to 50 characters'],
     minlength: [2, 'A category name must have more or equal to 2 characters'],
   },
-  parent: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category', // Referencia al mismo modelo
-  },
+  isMain: Boolean,
+  childs: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category', // Referencia al mismo modelo
+    },
+  ],
   setup: [
     {
       key: String,

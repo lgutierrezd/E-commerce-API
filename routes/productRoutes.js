@@ -20,17 +20,16 @@ router
 router.route('/:slug').get(productController.getProductBySlug);
 router.route('/search/:regex').get(productController.getProductsByRegex);
 
-router
-  .route('/config/:id')
-  .post(
-    authController.protect,
-    authController.restrictTo('admin'),
-    productController.addProductConfig,
-  );
+router.route('/category/:id').get(productController.getProductsByCategory);
 
 router
   .route('/config/:id')
   .get(productController.getProductConfig)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productController.addProductConfig,
+  )
   .patch(
     authController.protect,
     authController.restrictTo('admin'),

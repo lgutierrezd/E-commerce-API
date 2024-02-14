@@ -14,6 +14,8 @@ router
     categoryController.createCategory,
   );
 
+router.route('/menu').get(categoryController.getMenuOrderedCategories);
+
 router
   .route('/:id')
   .get(categoryController.getCategory)

@@ -22,10 +22,19 @@ const productSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
-    category: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: [true, 'A product must have a category'],
-      ref: 'Category', // Reference to the category model
+    categories: {
+      type: [
+        {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: 'Category', // Reference to the category model
+        },
+      ],
+      validate: {
+        validator: function (categories) {
+          return categories.length > 0; // Verificar que haya al menos un elemento en el array
+        },
+        message: 'At least one category is required', // Mensaje de error si la validación falla
+      },
     },
     brand: {
       type: mongoose.Schema.Types.ObjectId,

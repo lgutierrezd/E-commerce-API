@@ -51,14 +51,56 @@ exports.getProductBySlug = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getProductsByCategory = catchAsync(async (req, res, next) => {
+  const products = await Product.find({
+    category: req.params.id,
+    isActive: true,
+  }).select('-suppliers -isActive');
+  let newProducts = [];
+  for (const prod of products) {
+    let config = await ProductConfig.findById(
+      prod.id,
+      'configs.price configs.productionPrice configs.images configs.extraConfig',
+      {
+        slice: { images: 1 },
+      },
+    );
+    prod.config = config;
+    newProducts.push({
+      product: prod,
+      config: config,
+    });
+  }
+
+  if (newProducts.length === 0) {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: [],
+      },
+    });
+  }
+
+  if (!products) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data: newProducts,
+    },
+  });
+});
+
 exports.getAllProducts = factory.getAll(Product, {
-  path: 'reviews category brand',
+  path: 'reviews categories brand',
   select: 'name',
 });
 exports.getProduct = factory.getOne(
   Product,
   {
-    path: 'reviews category brand',
+    path: 'reviews categories brand',
     select: 'name',
   },
   '-suppliers',
