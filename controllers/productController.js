@@ -2,6 +2,8 @@ const catchAsync = require('../utils/catchAsync');
 const Product = require('./../models/productModel');
 const ProductConfig = require('./../models/productConfigModel');
 const factory = require('./handlerFactory');
+const AppError = require('./../utils/appError');
+const APIFeatures = require('./../utils/apiFeatures');
 
 exports.aliasTopProducts = (req, res, next) => {
   req.query.limit = '5';
@@ -52,18 +54,30 @@ exports.getProductBySlug = catchAsync(async (req, res, next) => {
 });
 
 exports.getProductsByCategory = catchAsync(async (req, res, next) => {
-  const products = await Product.find({
-    category: req.params.id,
-    isActive: true,
-  }).select('-suppliers -isActive');
+  const features = new APIFeatures(
+    Product.find(
+      {
+        categories: {
+          $elemMatch: { $eq: req.params.id },
+        },
+        isActive: true,
+      },
+      '_id name slug',
+    ),
+    req.query,
+  )
+    .filter()
+    .sort()
+    .limitFields()
+    .paginate();
+
+  const products = await features.query;
+
   let newProducts = [];
   for (const prod of products) {
     let config = await ProductConfig.findById(
       prod.id,
-      'configs.price configs.productionPrice configs.images configs.extraConfig',
-      {
-        slice: { images: 1 },
-      },
+      'configs.price configs.images configs.extraConfig',
     );
     prod.config = config;
     newProducts.push({
@@ -75,8 +89,16 @@ exports.getProductsByCategory = catchAsync(async (req, res, next) => {
   if (newProducts.length === 0) {
     res.status(200).json({
       status: 'success',
+      results: newProducts.length,
       data: {
         data: [],
+      },
+    });
+  } else {
+    res.status(200).json({
+      status: 'success',
+      data: {
+        data: newProducts,
       },
     });
   }
@@ -84,13 +106,6 @@ exports.getProductsByCategory = catchAsync(async (req, res, next) => {
   if (!products) {
     return next(new AppError('No document found with that ID', 404));
   }
-
-  res.status(200).json({
-    status: 'success',
-    data: {
-      data: newProducts,
-    },
-  });
 });
 
 exports.getAllProducts = factory.getAll(Product, {
