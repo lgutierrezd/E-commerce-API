@@ -15,7 +15,7 @@ const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const shippingMethodRouter = require('./routes/shippingMethodRoutes');
-const stockRouter = require('./routes/stockRoutes');
+const locationRouter = require('./routes/locationRoutes');
 const supplierRouter = require('./routes/supplierRoutes');
 const brandRouter = require('./routes/brandRoutes');
 const cartRouter = require('./routes/cartRoutes');
@@ -90,7 +90,7 @@ app.use((req, res, next) => {
 //app.use('/api/v1/cart', cartRouter);
 app.use('/api/v1/brand', brandRouter);
 app.use('/api/v1/supplier', supplierRouter);
-app.use('/api/v1/stock', stockRouter);
+app.use('/api/v1/location', locationRouter);
 app.use('/api/v1/shippingMethod', shippingMethodRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/categories', categoryRouter);

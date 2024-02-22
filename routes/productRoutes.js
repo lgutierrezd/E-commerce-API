@@ -1,5 +1,6 @@
 const express = require('express');
 const productController = require('../controllers/productController');
+const productConfigController = require('../controllers/productConfigController');
 const authController = require('./../controllers/authController');
 const reviewRouter = require('./reviewRoutes');
 
@@ -17,25 +18,6 @@ router
     productController.createProduct,
   );
 
-router.route('/:slug').get(productController.getProductBySlug);
-router.route('/search/:regex').get(productController.getProductsByRegex);
-
-router.route('/category/:id').get(productController.getProductsByCategory);
-
-router
-  .route('/config/:id')
-  .get(productController.getProductConfig)
-  .post(
-    authController.protect,
-    authController.restrictTo('admin'),
-    productController.addProductConfig,
-  )
-  .patch(
-    authController.protect,
-    authController.restrictTo('admin'),
-    productController.updateProductConfig,
-  );
-
 router
   .route('/:id')
   .get(productController.getProduct)
@@ -48,6 +30,24 @@ router
     authController.protect,
     authController.restrictTo('admin'),
     productController.deleteProduct_isActive,
+  );
+
+router.route('/searchslug/:slug').get(productController.getProductBySlug);
+router.route('/search/:regex').get(productController.getProductsByRegex);
+router.route('/category/:id').get(productController.getProductsByCategory);
+
+router
+  .route('/config/:id')
+  .get(productConfigController.getProductConfig)
+  .post(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productConfigController.addProductConfig,
+  )
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin'),
+    productConfigController.updateProductConfig,
   );
 
 module.exports = router;

@@ -33,6 +33,7 @@ exports.getProductsByRegex = catchAsync(async (req, res, next) => {
 });
 
 exports.getProductBySlug = catchAsync(async (req, res, next) => {
+  console.log('hola mundo');
   const query = Product.findOne({ slug: req.params.slug })
     .select('-suppliers')
     .populate({
@@ -77,7 +78,7 @@ exports.getProductsByCategory = catchAsync(async (req, res, next) => {
   for (const prod of products) {
     let config = await ProductConfig.findById(
       prod.id,
-      'configs.price configs.images configs.extraConfig',
+      'configs._id configs.price configs.images configs.extraConfig',
     );
     prod.config = config;
     newProducts.push({
@@ -128,34 +129,6 @@ exports.deleteProduct_isActive = catchAsync(async (req, res, next) => {
   const isActive = req.body.isActive !== undefined ? req.body.isActive : false;
 
   const product = await Product.findByIdAndUpdate(req.params.id, {
-    isActive: isActive,
-  });
-  res.status(204).json({
-    status: 'success',
-    data: null,
-  });
-});
-
-exports.getProductConfig = factory.getOne(ProductConfig);
-exports.addProductConfig = catchAsync(async (req, res, next) => {
-  req.body.id = req.params.id;
-  const product = await ProductConfig.create(req.body);
-  if (product) {
-    res.status(201).json({
-      status: 'success',
-      data: {
-        product,
-        message: 'Product configurations created successfully',
-      },
-    });
-  }
-});
-
-exports.updateProductConfig = factory.updateOne(ProductConfig);
-exports.deleteProductConfig = catchAsync(async (req, res, next) => {
-  const isActive = req.body.isActive !== undefined ? req.body.isActive : false;
-
-  const product = await ProductConfig.findByIdAndUpdate(req.params.id, {
     isActive: isActive,
   });
   res.status(204).json({

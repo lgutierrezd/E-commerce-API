@@ -10,6 +10,8 @@ const productConfigSchema = new mongoose.Schema({
   configs: [
     {
       colorHex: String,
+      size: String,
+      weight: String, // faltaria food
       images: [String],
       productDescription: {
         type: String,
@@ -23,9 +25,21 @@ const productConfigSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'A product must have a production price'],
       },
+      type: {
+        type: String,
+        enum: ['color', 'size', 'weight', 'food'],
+        default: 'color',
+      },
+      discountPrice: {
+        type: Number,
+      },
       stock: [
         {
-          location: String,
+          location: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Location',
+            unique: true,
+          },
           quantity: Number,
           size: String,
         },
