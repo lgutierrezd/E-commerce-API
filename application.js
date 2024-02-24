@@ -27,7 +27,9 @@ const corsOptions = {
   origin: [
     'https://silent-blend-412918.uc.r.appspot.com',
     'http://localhost:8080',
-  ], //, 'http://192.168.100.28:8080' Replace with the actual origin of your client application
+    ,
+    'http://192.168.100.28:8080',
+  ],
   credentials: true, // Allow credentials (cookies, etc.)
 };
 app.use(cors(corsOptions));

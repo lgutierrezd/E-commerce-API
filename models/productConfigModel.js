@@ -38,7 +38,6 @@ const productConfigSchema = new mongoose.Schema({
           location: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Location',
-            unique: true,
           },
           quantity: Number,
           size: String,
