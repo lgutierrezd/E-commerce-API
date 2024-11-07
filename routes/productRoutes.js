@@ -49,5 +49,9 @@ router
     authController.restrictTo('admin'),
     productConfigController.updateProductConfig,
   );
+ 
+router
+  .route('/detailProductView/:id')
+  .get(productConfigController.getDetailProductView);
 
 module.exports = router;

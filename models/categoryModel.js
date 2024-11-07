@@ -16,6 +16,7 @@ const categorySchema = new mongoose.Schema({
       ref: 'Category', // Referencia al mismo modelo
     },
   ],
+  imageUrl: String,
   setup: [
     {
       key: String,
