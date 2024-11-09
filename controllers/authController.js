@@ -20,9 +20,11 @@ const createSendToken = (user, statusCode, res) => {
     ),
     httpOnly: true,
     sameSite: 'none',
-    domain: 'ecommerce:3000',
   };
-  if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+  if (process.env.NODE_ENV === 'production') {
+    cookieOptions.secure = true;
+    cookieOptions.domain = 'ecommerce:3000';
+  } 
 
   res.cookie('jwt', token, cookieOptions);
 
