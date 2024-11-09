@@ -18,3 +18,6 @@ EXPOSE 3000
 
 # Comando para correr la aplicación
 CMD ["npm", "start"]
+
+#docker build -t ecommerce_api . 
+#docker run -p 3000:3000 ecommerce_api  
