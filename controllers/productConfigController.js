@@ -9,12 +9,29 @@ exports.getDetailProductView = factory.getOne(ProductConfig, {
 });
 
 exports.getProductConfig = catchAsync(async (req, res, next) => {
-  const data = await ProductConfig.find({ product: req.params.id });
-  //.select('-product');
+  var data = await ProductConfig.find({ product: req.params.id });
+  data = data[0];
+  if (!data) {
+    return next(new AppError('No document found with that ID', 404));
+  }
   res.status(200).json({
     status: 'success',
     data: {
-      data: data
+      data
+    },
+  });
+});
+
+exports.getProductConfigCount = catchAsync(async (req, res, next) => {
+  var data = await ProductConfig.find({ product: req.params.id });
+  data = data[0];
+  if (!data) {
+    return next(new AppError('No document found with that ID', 404));
+  }
+  res.status(200).json({
+    status: 'success',
+    data: {
+      data
     },
   });
 });

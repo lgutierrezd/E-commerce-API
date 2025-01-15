@@ -33,15 +33,8 @@ exports.getProductsByRegex = catchAsync(async (req, res, next) => {
 });
 
 exports.getProductBySlug = catchAsync(async (req, res, next) => {
-  console.log('hola mundo');
-  const query = Product.findOne({ slug: req.params.slug })
-    .select('-suppliers')
-    .populate({
-      path: 'stock',
-      select: 'quantity',
-    });
+  const query = Product.findOne({ slug: req.params.slug });
   const doc = await query;
-
   if (!doc) {
     return next(new AppError('No document found with that ID', 404));
   }
@@ -110,17 +103,11 @@ exports.getProductsByCategory = catchAsync(async (req, res, next) => {
 });
 
 exports.getAllProducts = factory.getAll(Product, {
-  path: 'reviews categories brand',
+  path: 'reviews categories brand suppliers',
   select: 'name',
 });
-exports.getProduct = factory.getOne(
-  Product,
-  {
-    path: 'reviews categories brand',
-    select: 'name',
-  },
-  '-suppliers',
-);
+
+exports.getProduct = factory.getOne(Product);
 
 exports.createProduct = factory.createOne(Product);
 exports.updateProduct = factory.updateOne(Product);

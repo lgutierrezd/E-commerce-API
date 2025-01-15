@@ -25,7 +25,7 @@ const app = express();
 app.set('trust proxy', '127.0.0.1');
 const corsOptions = {
   origin: [
-    'https://silent-blend-412918.uc.r.appspot.com',
+    'http://localhost:5173',
     'http://localhost:8080',
     ,
     'http://192.168.100.28:8080',

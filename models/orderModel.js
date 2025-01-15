@@ -9,7 +9,7 @@ const orderSchema = new mongoose.Schema({
     {
       product: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Product', // Referencia al modelo de productos
+        ref: 'ProductConfig', // Referencia al modelo de productos
       },
       price: {
         type: Number,

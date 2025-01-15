@@ -18,12 +18,13 @@ const createSendToken = (user, statusCode, res) => {
     expires: new Date(
       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000,
     ),
-    httpOnly: true,
+    httpOnly: false, //cambiar despues de publicar a true
     sameSite: 'none',
+    secure: process.env.NODE_ENV === 'development',//'production',
   };
   if (process.env.NODE_ENV === 'production') {
     cookieOptions.secure = true;
-    cookieOptions.domain = 'ecommerce:3000';
+    cookieOptions.domain = 'localhost:3000';
   } 
 
   res.cookie('jwt', token, cookieOptions);

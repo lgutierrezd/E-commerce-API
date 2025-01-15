@@ -49,6 +49,10 @@ router
     authController.restrictTo('admin'),
     productConfigController.updateProductConfig,
   );
+
+router
+  .route('/config/count/:id')
+  .get(productConfigController.getProductConfigCount);
  
 router
   .route('/detailProductView/:id')

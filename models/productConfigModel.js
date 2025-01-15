@@ -1,6 +1,4 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
-const Product = require('./productModel');
 
 const productConfigSchema = new mongoose.Schema(
   {
@@ -8,6 +6,17 @@ const productConfigSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Product',
       unique: false,
+    },
+    configCount: {
+      type: Number,
+      default: function () {
+      return this.configs.length;
+      },
+    },
+    type: {
+      type: String,
+      enum: ['color', 'size', 'weight', 'food'],
+      default: 'size',
     },
     configs: [
       {
@@ -20,6 +29,10 @@ const productConfigSchema = new mongoose.Schema(
           type: String,
           required: [true, 'A product must have a description'],
         },
+        productCharacteristics: {
+          type: String,
+          required: [false],
+        },
         price: {
           type: Number,
           required: [true, 'A product must have a price'],
@@ -27,11 +40,6 @@ const productConfigSchema = new mongoose.Schema(
         productionPrice: {
           type: Number,
           required: [true, 'A product must have a production price'],
-        },
-        type: {
-          type: String,
-          enum: ['color', 'size', 'weight', 'food'],
-          default: 'color',
         },
         discountPrice: {
           type: Number,

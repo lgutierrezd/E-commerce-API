@@ -14,6 +14,7 @@ router
     categoryController.createCategory,
   );
 
+router.route('/search/:regex').get(categoryController.findCategoriesByRegex)
 router.route('/menu').get(categoryController.getMenuOrderedCategories);
 
 router
